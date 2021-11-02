@@ -1,12 +1,8 @@
 # Celeste v1 Front End
 <img src="https://celeste.photos/logo_flat.png" alt="Celeste V2 Logo" width="200"/>
 
-**Table of Contents**
-
-[TOC]
-
 # Disclaimer
-This is an old version of Celeste. Back from when I was new at web development. I don't suggest using this code exactly, but using it as a way to get started at building your own front end UI for an image host. I'm mostly posting this because I don't want to repeat the same mistakes as I did back in the day (like not using a framework lol.) Overall this is just a disaster so pelase use it as a general guide for what to do ONLY IF you have no clue how to implament a feature that we have that you like.
+This is an old version of Celeste. Back from when I was new at web development. I don't suggest using this code exactly, but using it as a way to get started at building your own front end UI for an image host. I'm mostly posting this because I don't want to repeat the same mistakes as I did back in the day (like not using a framework lol.) Overall this is just a disaster so pelase use it as a general guide for what to do ONLY IF you have no clue how to implament a feature that we have that you like. Oh and... Remember that some of the code here wasn't written by me but an ex developer that I'd rather not name.
 
 # What Is Included?
 - Home Page (html, css, js)
