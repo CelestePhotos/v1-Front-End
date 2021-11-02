@@ -1,0 +1,80 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Celeste - Register</title>
+		<script async src="https://arc.io/widget.min.js#ezcTupQJ"></script>
+		<link rel="shortcut icon" href="/assets/favicon.png">
+		<!--   Embed Information   -->
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Celeste - Register" />
+		<meta property="og:description" content="Premium image hosting at no cost" />
+		<meta property="og:url" content="//celestephoto.com" />
+		<link href="/assets/css/register.css" rel="stylesheet"/>
+		<link href="/assets/alertify/alertify.css" rel="stylesheet" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="/assets/alertify/alertify.js"></script>
+		<script src="/assets/js/CustomRightClick.js"></script>
+		<script>
+			$(function(){
+				const invite = new URL(location.href).searchParams.get('invite') || '';
+				if(invite && invite !== ''){
+					document.getElementById('key').value = invite;
+					document.getElementById('key').disabled = true;
+				}
+				document.getElementById('submit').disabled = false;
+				$('#form').submit(function(e){
+				e.preventDefault();
+				if(invite && invite !== '') document.getElementById('key').disabled = false;
+				alertify.notify('Registering...', 'warning');
+    			$.ajax({
+        			url: '/api/register',
+        			type: 'post',
+        			data:$('#form').serialize(),
+        			success:function(response){
+						alertify.notify(response.message, response.type);
+            			if(response.type === 'success') location.href="/dashboard"
+        			}
+				});
+				if(invite && invite !== '') document.getElementById('key').disabled = true;
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<div class="vertical-center">
+			<center>
+				<!--   Form   -->
+				<form method="post" action="/api/register" id="form">
+					<a href="/"><img src="https://res.cloudinary.com/celestephoto/image/upload/f_auto/logo_g8jxjz.png"></a>
+					<br>
+					<label>Username:</label>
+					<br>
+					<input type="text" name="uname" id="uname" value="" class="input" placeholder="Username" maxlength="15" required="">
+					<br>
+					<label>Email:</label>
+					<br>
+					<input type="email" name="email" id="email" value="" class="input" placeholder="Email" required="">
+					<br>
+					<label>Password:</label>
+					<br>
+					<input type="password" name="password" id="password" value="" class="input" placeholder="Password" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 characters and must be alphanumeric" required="">
+					<br>
+					<label>Invite Key:</label>
+					<br>
+					<input type="text" name="key" id="key" value="" class="input" placeholder="Invite key" required="">
+					<br>
+					<input id="acceptprivacy" type="checkbox" name="acceptprivacy" value="true" required="">
+					<label for="acceptprivacy">I have read and agree to the <a href="/privacy" target="_blank">Privacy Policy</a></label><br>
+					<input id="accepttos" type="checkbox" name="accepttos" value="true" required="">
+					<label for="accepttos">I have read and agree to the <a href="/terms" target="_blank">Terms of Service</a></label><br>
+					<input id="submit" type="submit" value="Register" class="submit" disabled>
+					</form>
+				<h4>
+					Existing user? 
+					<a href="/login">Login</a>
+				</h4>
+				<!--   End Form   -->
+			</center>
+		</div>
+	</body>
+<html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Celeste - Change Password</title>
+      <link rel="shortcut icon" href="/assets/favicon.png">
+      <link href="/assets/css/login.css" rel="stylesheet">
+      <link href="/assets/alertify/alertify.css" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+      <script src="/assets/alertify/alertify.js"></script>
+      <script src="/assets/js/CustomRightClick.js"></script>
+      <script>
+         window.addEventListener('load', () => {
+                      const uuid = new URL(location.href).searchParams.get("uuid") || '';
+                      const code = new URL(location.href).searchParams.get("code") || '';
+                      document.getElementById('uuid').placeholder = uuid;
+                      document.getElementById('submit').disabled = false;
+                      document.getElementById('password').disabled = false;
+                      document.getElementById('confirmpassword').disabled = false;
+                      document.body.style.visibility = "visible";
+         	$('#form').submit(function(e){
+         	e.preventDefault();
+         	alertify.notify('Changing password...', 'warning');
+          			$.ajax({
+              			url: `/api/changepassword?uuid=${uuid}&code=${code}`,
+              			type: 'post',
+              			data:$('#form').serialize(),
+              			success:function(response){
+         			alertify.notify(response.message, response.type)
+                  			if(response.type === 'success') setTimeout(() => {location.href="/login"}, 2000);
+              			}
+          			});
+         });
+         });
+      </script>
+   </head>
+   <body>
+      <div class="vertical-center">
+         <center>
+            <form method="post" action="/api/changepassword" id="form">
+               <a href="/"><img src="https://res.cloudinary.com/celestephoto/image/upload/f_auto/logo_g8jxjz.png"></a>
+               <br>
+               <input type="text" name="uuid" id="uuid" class="input" placeholder="Loading..." disabled></input>
+               <br>
+               <input type="password" name="password" id="password" value="" class="input" placeholder="Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required disabled>
+               <br>
+               <input type="password" name="confirmpassword" id="confirmpassword" value="" class="input" placeholder="Confirm Password" required disabled>
+               <br>
+               <input id="submit" type="submit" value="Change Password" class="submit" disabled>
+            </form>
+         </center>
+      </div>
+   </body>
+</html>

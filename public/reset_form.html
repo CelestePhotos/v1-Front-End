@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Celeste - Reset Password</title>
+    <link rel="shortcut icon" href="/assets/favicon.png">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Celeste - Reset Password">
+    <meta property="og:description" content="Premium image hosting at no cost">
+    <meta property="og:url" content="celestephoto.com">
+    <link href="/assets/css/login.css" rel="stylesheet">
+    <link href="/assets/alertify/alertify.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
+    <script src="/assets/alertify/alertify.js" type="text/javascript"></script>
+    <script src="/assets/js/CustomRightClick.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+                window.addEventListener('load', () => {
+                    $('#form').submit(function(e){
+                    e.preventDefault();
+                    alertify.notify('Sending reset password email...', 'warning');
+                    $.ajax({
+                        url: '/api/reset/password',
+                        type: 'post',
+                        data:$('#form').serialize(),
+                        success:function(response){
+                            alertify.notify(response.message, response.type)
+                        }
+                    });
+                });
+            });
+            </script>
+    </head>
+    <body>
+    <div class="vertical-center">
+    <center>
+    
+    <form method="post" action="/api/reset/password" id="form">
+    <a href="/"><img src="https://res.cloudinary.com/celestephoto/image/upload/f_auto/logo_g8jxjz.png"></a>
+    <br>
+    <input type="email" name="email" id="email" class="input" placeholder="Email" required="">
+    <br>
+    <input type="submit" value="Reset Password" class="submit">
+    </form>
+    
+    </center>
+    </div>
+    
+    <div id="CustomRightClick_Menu" class="CustomRightClick_Container" style="visibility: hidden;"><span><button class="CustomRightClick_Button" onclick="location.href='/'">Home</button></span><span><button class="CustomRightClick_Button" onclick="location.href='/dashboard'">Dashboard</button></span><span><button class="CustomRightClick_Button" onclick="location.href='/domains'">Domains</button></span><span><button class="CustomRightClick_Button" onclick="location.href='/discord'">Discord</button></span></div></body></html>

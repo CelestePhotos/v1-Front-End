@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Celeste - Login</title>
+		<script async src="https://arc.io/widget.min.js#ezcTupQJ"></script>
+		<link rel="shortcut icon" href="/assets/favicon.png">
+		<!--   Embed Information   -->
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Celeste - Login" />
+		<meta property="og:description" content="Premium image hosting at no cost" />
+		<meta property="og:url" content="celestephoto.com" />
+		<link href="/assets/css/login.css" rel="stylesheet"/>
+		<link href="/assets/alertify/alertify.css" rel="stylesheet" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="/assets/alertify/alertify.js"></script>
+		<script src="/assets/js/CustomRightClick.js"></script>
+		<script>
+			window.addEventListener('load', () => {
+				document.getElementById('submit').disabled = false;
+				$('#form').submit(function(e){
+				e.preventDefault();
+				alertify.notify('Logging in...', 'warning');
+    			$.ajax({
+        			url: '/api/login',
+        			type: 'post',
+        			data:$('#form').serialize(),
+        			success:function(response){
+						alertify.notify(response.message, response.type)
+            			if(response.type === 'success') location.href="/dashboard";
+        			}
+    			});
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<div class="vertical-center">
+			<center>
+				<!--   Form   -->
+				<form method="post" action="/api/login" id="form">
+					<a href="/"><img src="https://res.cloudinary.	com/celestephoto/image/upload/f_auto/logo_g8jxjz.png"></a>
+					<br>
+					<input type="text" name="uname" id="uname" class="input" placeholder="Username or Email" required/>
+					<br>
+					<input type="password" name="psw" id="psw" class="input" placeholder="Password" required/>
+					<br>
+					<input type="submit" value="Login" class="submit" id="submit" disabled/>										
+				</form>
+				<h4>
+					Forgot password?
+					<a href="/reset">Click Here</a>
+				</h4>
+				<h4>
+					Need an account? 
+					<a href="/register">Register</a>
+				</h4>
+				<!--   End Form   -->
+			</center>
+		</div>
+	</body>
+<html>

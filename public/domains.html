@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Celeste - Domains</title>
+	<script async src="https://arc.io/widget.min.js#ezcTupQJ"></script>
+	<meta property="og:title" content="Celeste - Domains" />
+        <meta property="og:description" content="The domains Celeste currently has" />
+        <meta property="og:image" content="/assets/favicon.png" />
+        <meta name="theme-color" content="#8F5CFF" />
+        <link rel="stylesheet" href="/assets/css/domains.css">
+        <script src="/assets/js/CustomRightClick.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            $.ajax({
+                url: '/domains.json?' + Date.now(),
+                type: 'GET',
+                success: function(domains) {
+                    let $domains = '';
+                    for(const domain in domains) {
+                        let tags = '';
+                        for(const tag in domains[domain].tags){
+                            const color = domains[domain].tags[tag];
+                            tags+=`<button${color ? ` style="background-color:${color}"` : ''}>${tag}</button>\n`;
+                        };
+                        $domains+=`<tr>
+                        <td>${domain}</td>
+                        <td>${tags.length > 0 ? tags : 'None'}</td>
+                        </tr>\n`;
+                    };
+                    document.getElementById('domains').innerHTML+= $domains;
+                    document.getElementById('c').removeChild(document.getElementById('loading'));
+                    document.getElementById('domains').style.visibility = 'visible';
+                }
+            });
+        </script>
+    </head>
+    <body>
+        <center id="c">
+            <h1 id="loading">Loading....</h1>
+            <div style="overflow-x:auto;visibility:hidden;">
+                <table id="domains">
+                    <tr>
+                        <th>Domain</th>
+                        <th>Tags</th>
+                    </tr>
+                </table>
+            </div>
+        </center>
+    </body>
+</html>

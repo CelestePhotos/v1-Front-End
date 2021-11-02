@@ -1,0 +1,279 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <!--   Preinit   -->
+    <title>Celeste - Dashboard</title>
+    <script async src="https://arc.io/widget.min.js#ezcTupQJ"></script>
+    <link rel="shortcut icon" href="/assets/favicon.png">
+    <link rel="stylesheet" href="/assets/css/dashboard.css" />
+    <link rel="stylesheet" href="/assets/alertify/alertify.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/assets/alertify/alertify.js"></script>
+    <script src="/assets/js/CustomRightClick.js"></script>
+</head>
+
+<body style="visibility:hidden;">
+
+    <center id="loading" class="loadingbox">
+        <div class="loading"><div></div><div></div><div></div></div>
+	<br>
+	<p>Loading Dashboard...</p>
+    <p id="takingForever" style="visibility: hidden; color: #999;">We're sorry... This is taking longer than expected.</p>
+    </center>
+
+
+
+
+
+    <!--   Dashboard   -->
+    <div class="content" id="dashboard">
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Account Type</p>
+                <p id="accounttype" class="widgetcontentlarge">Loading</p>
+            </center>
+        </div>
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Files Uploaded</p>
+                <p id="uploadedphotoscount" class="widgetcontentlarge">Loading</p>
+            </center>
+        </div>
+
+
+
+
+
+
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Embeds</p>
+                <form method="POST" action="/api/embed" id="form">
+                    <input type="checkbox" id="showembed" name="enabled" onclick="toggleembed();" value="true">
+                    <label for="showembed">Show Embed</label><br>
+                    <input class="input" type="text" id="title" name="title" placeholder="Title" disabled><br>
+                    <textarea form="form" class="input" type="text" id="description" name="description" placeholder="Description" disabled></textarea><br>
+                    <input class="colorpicker" type="color" id="hexcolor" name="hexcolor" value="#8f5cff" disabled><br>
+                    <input type="checkbox" id="showauthor" name="showauthor" value="true" disabled>
+                    <label for="showauthor">Show Author</label><br><br>
+                    <input type="submit" value="Submit" class="widgetbutton" id="submit" disabled>
+                </form>
+
+            </center>
+        </div>
+
+
+
+
+
+
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Domain</p>
+                <form method="POST" action="/api/domain" id="pickdomain">
+		            <input class="input" type="text" id="subdomain" name="subdomain" placeholder="Subdomain"><br>
+                    <select name="domain" id="domainpicker">
+					</select>
+                    <br><br>
+                    <input type="checkbox" name="invisurl" id="invisurl" value="true" disabled>
+                    <label for="invisurl">Invisible URL</label>
+                    <br><br>
+                    <input class="widgetbutton" type="submit" value="Change">
+                </form>
+            </center>
+        </div>
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Fake Domain</p>
+                <form id="fakeurlform">
+                    <input type="checkbox" onclick="togglefakeurl();" name="enabled" id="fakeurlenabled" value="true">
+                    <label for="fakeurlenabled">Enabled</label><br><br>
+                    <input class="input" type="text" id="fakeurlinput" name="domain" placeholder="Domain" disaled><br>
+                    <input class="widgetbutton" type="submit" id="submitfakeurl" value="Submit">
+                </form>
+            </center>
+        </div>
+        <div class="widget">
+            <center>
+                <p class="widgettitle">File Manager</p>
+                <button id="purgeuploads" onclick="purge();" class="widgetbutton">Purge Uploads</button>
+            </center>
+        </div>
+    </div>
+
+
+
+    <!-- Invites -->
+    <div class="content" id="invites">
+        <center>
+            <table id="invites-table">
+                <tr>
+                    <th class="tl">Invite Code (Click to copy)</th>
+                    <th class="tr">Used</th>
+                </tr>
+            </table>
+            <br>
+            <button class="widgetbutton" id="createinvite" onclick="createInvite();">Create Invite</button>
+        </center>
+    </div>
+
+
+
+
+
+    <!--   Account   -->
+    <div class="content" id="account">
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Change Username</p>
+                <button class="widgetbutton" onclick="changeUsername();">Change Username</button>
+            </center>
+        </div>
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Change Password</p>
+                <button class="widgetbutton" onclick="changePassword();">Change Password</button>
+            </center>
+        </div>
+	    <div class="widget">
+            <center>
+                <p class="widgettitle">Token</p>
+		        <p>Click To Copy</p>
+                <token id="tkn"></token><br><br>
+                <button class="widgetbutton" onclick="resetToken();">Reset Token</button>
+            </center>
+        </div>
+        <div class="widget">
+            <center>
+                <p class="widgettitle">Uploader</p>
+                <div>This feature is only available via the new dashboard.</div>
+            </center>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--   Sidebar   -->
+    <div class="sidebar">
+        <img src="https://res.cloudinary.com/celestephoto/image/upload/f_auto/logo_g8jxjz.png" class="logo">
+
+        <center>
+            <button onclick="document.getElementById('file-input').click();" style="background-color:rgba(0,0,0,0);border:none;outline:0;cursor:pointer;padding:0;margin:0;"><div class="usericonwrap"><img style="height:100px;width:100px" id="usericon" class="usericon"></div></button>
+            <form method="POST" action="/api/pfp" id="pfpform" enctype="multipart/form-data">
+                <input id="file-input" type="file" name="imgfile" accept="image/png" style="display: none;" />
+            </form>
+        </center>
+        <center>
+            <h1 id="uname" style="padding-top:0px;">.</h1>
+        </center>
+
+        <div class="navigation">
+            <p style="padding-left:20px; color:rgb(200,200,200)">Navigation</p>
+
+            <button id="nav_dash" onclick="nav_dash()" class="navigationitem navigationactive"><img src="assets/material.io/dashboard.svg">  Dashboard  <img class="navagationgo" src="assets/material.io/arrow.svg"></button><br>
+            <button id="nav_invites" onclick="nav_invites()" class="navigationitem"><img src="assets/material.io/invites.svg">  Invites  <img class="navagationgo" src="assets/material.io/arrow.svg"></button><br>
+            <button id="nav_account" onclick="nav_account()" class="navigationitem"><img src="assets/material.io/settings.svg">  Account  <img class="navagationgo" src="assets/material.io/arrow.svg"></button><br>
+            <button id="nav_profile" onclick="nav_profile()" class="navigationitem"><img src="assets/material.io/account_box.svg">  Profile  </button><br>
+            <button id="nav_discord" onclick="nav_discord()" class="navigationitem"><img src="assets/material.io/feedback.svg">  Discord  </button><br>
+            <button id="nav_logout" onclick="nav_logout()" class="navigationitem"><img src="assets/material.io/logout.svg">  Logout  </button><br>
+
+            <br>
+            <button onclick="location.href='https:\/\/celeste.photos/dashboard'" class="navigationitem">  Try the new dashboard!  </button><br>
+        </div>
+
+        <center>
+            <p class="copyinfo">© Celeste 2020-2021</p>
+        </center>
+
+    </div>
+
+
+
+    <!--Forms Start-->
+    <!--Change Password Form-->
+    <form id="changePasswordForm" style="display:none;" autocomplete="off">
+        <center>
+            <h2>Change Password</h2>
+            <input type="password" name="fakepassword" style="display:none;">
+            <input type="password" name="fakepassword" style="display:none;">
+            <input type="password" name="fakepassword" style="display:none;">
+
+            <input type="password" class="modal-input" name="oldpassword" id="changePasswordForm_oldpassword" placeholder="Current Password" required><br>
+            <input type="password" class="modal-input" name="newpassword" id="changePasswordForm_newpassword" autocomplete="new-password" placeholder="New Password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}" title="Password must contain atleast: 8 characters, 1 lowercase letter, 1 uppercase letter, 1 digit and must be alphanumeric." required><br>
+            <input type="password" class="modal-input" name="retypenewpassword" id="changePasswordForm_retypenewpassword" autocomplete="new-password" placeholder="Retype New Password" required><br>
+            <input type="submit" class="modal-button" value="Change">
+        </center>
+    </form>
+
+    <!--Change Username Form-->
+    <form id="changeUsernameForm" style="display:none;" autocomplete="off">
+        <center>
+            <h2>Change Username</h2>
+            <input type="text" name="fakeusername" style="display:none;">
+            <input type="password" name="fakepassword" style="display:none;">
+
+            <input type="text" class="modal-input" name="username" placeholder="New Username" required><br>
+            <input type="password" class="modal-input" name="password" placeholder="Password" required><br>
+            <input type="submit" class="modal-button" value="Change">
+        </center>
+    </form>
+    <!--Forms End-->
+
+
+
+
+    <!--   Scripts   -->
+    <script src="/assets/js/dashboard.js"></script>
+</body>
+
+</html>
